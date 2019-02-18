@@ -1,0 +1,46 @@
+```
+#import json
+from pymongo import MongoClient
+import pandas as pd
+
+###connect to MongoDB
+client = MongoClient('mongodb://localhost:27017/test')
+db = client['DB_NAME']
+mycoll= db['Collection_name']
+
+
+#following is the example:
+mongo_query = db.collection.find({"profileDetails.customerCategory.masterCode" : "PRECAT1"}, {"_id": 0})
+
+##function read the  pymongo cursor and iterate thru it
+def find_dicts(d,p=""):
+    o ={}
+    if type(d) is list:
+        for e in d:
+            if type(e) is not dict and type(e) is not list:
+                if type(e) is not dict:
+                	o.update(e)
+            else:
+                o.update(find_dicts(e , p +'.'+ str(e) if type (e) is not dict else p))
+    else:    
+        for k, v in d.items():
+            if type(v) is not dict and type(v) is not list:
+                o[p +'.'+ str(k)] = v
+            else:
+                o.update(find_dicts(v,p +'.'+ str(k)))
+    return o 
+
+
+ndf = pd.DataFrame()
+for doc in mongo_query:
+    nd = {}
+    d = find_dicts(doc)
+    for k,v in d.items():
+        nd[k.lstrip('.')] = v
+        
+    df = pd.DataFrame(nd , index=[0])
+    ndf = pd.concat([ndf , df],ignore_index=True)
+
+
+ndf.to_csv('Finall.csv', index=False)
+```
