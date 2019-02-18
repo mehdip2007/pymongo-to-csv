@@ -13,6 +13,8 @@ mycoll= db['Collection_name']
 mongo_query = db.collection.find({"profileDetails.customerCategory.masterCode" : "PRECAT1"}, {"_id": 0})
 
 ##function read the  pymongo cursor and iterate thru it
+### the function is ccoopreate wth https://github.com/sina33
+
 def find_dicts(d,p=""):
     o ={}
     if type(d) is list:
