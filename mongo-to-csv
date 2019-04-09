@@ -22,7 +22,7 @@ def find_dicts(d,p=""):
             if type(e) is not dict and type(e) is not list:
                 if type(e) is not dict:
                     try:
-                	    o.update(e)
+                        o.update(e)
                     except:
                         pass
             else:
