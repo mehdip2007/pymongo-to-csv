@@ -21,7 +21,10 @@ def find_dicts(d,p=""):
         for e in d:
             if type(e) is not dict and type(e) is not list:
                 if type(e) is not dict:
-                	o.update(e)
+                    try:
+                	    o.update(e)
+                    except:
+                        pass
             else:
                 o.update(find_dicts(e , p +'.'+ str(e) if type (e) is not dict else p))
     else:    
