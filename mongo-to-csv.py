@@ -1,4 +1,4 @@
-```
+
 #import json
 from pymongo import MongoClient
 import pandas as pd
@@ -33,12 +33,7 @@ ndf = pd.DataFrame()
 for doc in mongo_query:
     nd = {}
     d = find_dicts(doc)
-    for k,v in d.items():
-        nd[k.lstrip('.')] = v
-        
     df = pd.DataFrame(nd , index=[0])
     ndf = pd.concat([ndf , df],ignore_index=True)
-
-
 ndf.to_csv('Finall.csv', index=False)
-```
+
