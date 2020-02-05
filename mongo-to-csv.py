@@ -32,7 +32,7 @@ def flatten(d, parent_key='', sep='.'):
 ndf = pd.DataFrame()
 for doc in mongo_query:
     nd = {}
-    d = find_dicts(doc)
+    d = flatten(doc)
     df = pd.DataFrame(nd , index=[0])
     ndf = pd.concat([ndf , df],ignore_index=True)
 ndf.to_csv('Finall.csv', index=False)
