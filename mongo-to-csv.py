@@ -15,25 +15,18 @@ mongo_query = db.collection.find({"profileDetails.customerCategory.masterCode" :
 ##function read the  pymongo cursor and iterate thru it
 ### the function is ccoopreate wth https://github.com/sina33
 
-def find_dicts(d,p=""):
-    o ={}
-    if type(d) is list:
-        for e in d:
-            if type(e) is not dict and type(e) is not list:
-                if type(e) is not dict:
-                    try:
-                        o.update(e)
-                    except:
-                        pass
-            else:
-                o.update(find_dicts(e , p +'.'+ str(e) if type (e) is not dict else p))
-    else:    
-        for k, v in d.items():
-            if type(v) is not dict and type(v) is not list:
-                o[p +'.'+ str(k)] = v
-            else:
-                o.update(find_dicts(v,p +'.'+ str(k)))
-    return o 
+def flatten(d, parent_key='', sep='.'):
+    items = {}
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collectionsAbc.MutableMapping):
+            items.update(flatten(v, new_key, sep=sep).items())
+        elif isinstance(v, list):
+            for i, e in enumerate(v):
+                items.update(flatten({new_key + sep + str(i): v[i]}))
+        else:
+            items.update({new_key: v})
+    return dict(items)
 
 
 ndf = pd.DataFrame()
