@@ -2,6 +2,11 @@
 #import json
 from pymongo import MongoClient
 import pandas as pd
+import collections
+try:
+    collectionsAbc = collections.abc
+except AttributeError:
+    collectionsAbc = collections
 
 ###connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/test')
