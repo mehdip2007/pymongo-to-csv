@@ -2,11 +2,7 @@
 #import json
 from pymongo import MongoClient
 import pandas as pd
-import collections
-try:
-    collectionsAbc = collections.abc
-except AttributeError:
-    collectionsAbc = collections
+
 
 ###connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/test')
@@ -15,7 +11,7 @@ mycoll= db['Collection_name']
 
 
 #following is the example:
-mongo_query = db.collection.find({"profileDetails.customerCategory.masterCode" : "PRECAT1"}, {"_id": 0})
+mongo_query = mycoll.find({"profileDetails.customerCategory.masterCode" : "PRECAT1"}, {"_id": 0})
 
 ##function read the  pymongo cursor and iterate thru it
 ### the function is ccoopreate wth https://github.com/sina33
