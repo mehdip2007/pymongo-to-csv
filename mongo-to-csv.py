@@ -21,17 +21,17 @@ mongo_query = db.collection.find({"profileDetails.customerCategory.masterCode" :
 ### the function is ccoopreate wth https://github.com/sina33
 
 def flatten(d, parent_key='', sep='.'):
-    items = {}
+    items = []
     for k, v in d.items():
         new_key = parent_key + sep + k if parent_key else k
-        if isinstance(v, collectionsAbc.MutableMapping):
-            items.update(flatten(v, new_key, sep=sep).items())
+        if isinstance(v, dict):
+            items.extend(flatten(v, new_key, sep=sep).items())
         elif isinstance(v, list):
-            for i, e in enumerate(v):
-                items.update(flatten({new_key + sep + str(i): v[i]}))
+            items.extend((new_key + sep + str(i), e) for i, e in enumerate(v) if isinstance(e, dict))
         else:
-            items.update({new_key: v})
+            items.append((new_key, v))
     return dict(items)
+
 
 
 ndf = pd.DataFrame()
